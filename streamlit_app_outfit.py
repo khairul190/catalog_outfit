@@ -1,10 +1,10 @@
 import streamlit as st
-from snowflake.snowpark.context import get_active_session
 import pandas as pd
 
-st.title("Pilih Outfitmu")
+st.title("Pilih Outfitmu :shirt:")
 
-session = get_active_session()
+cnx= st.connection("snowflake")
+session = cnx.session()
 
 # Get a list of colors for the dropdown selector
 table_colors = session.sql("SELECT color_or_style FROM catalog_for_website")
@@ -74,7 +74,7 @@ if option:
                         values (?,?,?,?);
                         """
                         session.sql(insert_query, (user_name, option, size_option, int(user_qty))).collect()
-                        st.success(f'Purchase successful! Quantity left: {qty_left}')
+                        st.success(f'Purchase successful! Quantity left: {qty_left}', icon="✅")
                         
 
                     except Exception as e:
